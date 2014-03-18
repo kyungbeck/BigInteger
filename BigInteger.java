@@ -1,5 +1,7 @@
+
 import java.io.*;
 import java.util.StringTokenizer;
+import java.util.regex.Matcher;
 
 public class BigInteger
 {
@@ -11,7 +13,7 @@ public class BigInteger
 			try
 			{
 				String input = br.readLine();
-				input = input.replace(" ", "");	// delete all blanks
+				input = input.replace(" ", "");	// remove all blanks
 				if (input.compareTo("quit") == 0)
 				{
 					break;
@@ -27,12 +29,59 @@ public class BigInteger
 
 	private static void calculate(String input)
 	{
-		// reference: http://sibnt.net/m/post/view/id/173
+		int state = 0;
+		String operand1_sign = "";
+		String operand1_value = "";
+		String operator = "";
+		String operand2_sign = "";
+		String operand2_value = "";
+		
+		// Start of parsing using FSM.
+		// StringTokenizer : http://sibnt.net/m/post/view/id/173
 		StringTokenizer stok = new StringTokenizer ( input, "/+/-/*", true ); 
 		while( stok.hasMoreTokens() )
 		{
-			System.out.println( stok.nextToken() );
+			String s = stok.nextToken();
+			if ( state == 0 && s.matches("[+-]") )
+			{
+				state = 1;
+				operand1_sign = s;
+			}
+			if ( state == 0 && s.matches("[0-9]+") )
+			{
+				state = 2;
+				operand1_sign = "+";
+				operand1_value = s;
+			}			
+			// matches : http://pupustory.tistory.com/132
+			if ( state == 1 && s.matches ("[0-9]+") )
+			{
+				state = 3;
+				operand1_value = s;
+			}
+			if ( (state == 2 || state == 3) && s.matches("[+|-|*]") )
+			{
+				state = 4;
+				operator = s;
+			}
+			if ( state == 4 && s.matches("[+-]") )
+			{
+				state = 5;
+				operand2_sign = s;
+			}
+			if ( state == 4 && s.matches("[0-9]+") )
+			{
+				state = 6;
+				operand2_sign = "+";
+				operand2_value = s;
+			}			
+			if ( state == 5 && s.matches ("[0-9]+") )
+			{
+				state = 7;
+				operand2_value = s;
+			}			
 		}
-		// System.out.println("<< calculate 함수에서" + input + "을 계산할 예정입니다 >>");
+		System.out.println( operand1_sign + " " + operand1_value + " " + operator + " " + operand2_sign + " " + operand2_value);
+		// End of parsing using FSM.
 	}
 }
