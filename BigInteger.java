@@ -46,42 +46,49 @@ public class BigInteger
 			{
 				state = 1;
 				operand1_sign = s;
+				continue;
 			}
 			if ( state == 0 && s.matches("[0-9]+") )
 			{
 				state = 2;
 				operand1_sign = "+";
 				operand1_value = s;
+				continue;
 			}			
 			// matches : http://pupustory.tistory.com/132
 			if ( state == 1 && s.matches ("[0-9]+") )
 			{
 				state = 3;
 				operand1_value = s;
+				continue;
 			}
-			if ( (state == 2 || state == 3) && s.matches("[+|-|*]") )
+			if ( (state == 2 || state == 3) && s.matches("[*+-]") )
 			{
 				state = 4;
 				operator = s;
+				continue;
 			}
 			if ( state == 4 && s.matches("[+-]") )
 			{
 				state = 5;
 				operand2_sign = s;
+				continue;
 			}
 			if ( state == 4 && s.matches("[0-9]+") )
 			{
 				state = 6;
 				operand2_sign = "+";
 				operand2_value = s;
+				continue;
 			}			
 			if ( state == 5 && s.matches ("[0-9]+") )
 			{
 				state = 7;
 				operand2_value = s;
+				continue;
 			}			
 		}
-		System.out.println( operand1_sign + " " + operand1_value + " " + operator + " " + operand2_sign + " " + operand2_value);
+		System.out.println( operand1_sign + " " + operand1_value + " " + operator + " " + operand2_sign + " " + operand2_value );
 		// End of parsing using FSM.
 	}
 }
