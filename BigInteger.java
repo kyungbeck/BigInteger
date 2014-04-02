@@ -13,6 +13,7 @@ public class BigInteger
 			try
 			{
 				String input = br.readLine();
+				input = input.replace("\t", ""); // remove tab
 				input = input.replace(" ", "");	// remove all blanks
 				if (input.compareTo("quit") == 0)
 				{
