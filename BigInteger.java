@@ -33,10 +33,14 @@ class MyInteger {
 
 	public void Print()
 	{
-		if (GetCharSign() == '-')
+		if (GetCharSign() == '+')
+			;
+		else // case '-' sign
 		{
-			if (this.GetIntLength() == 1 && this.GetIntIndexAt(0) == 0) ;
-			else System.out.printf("%c", this.GetCharSign());
+			if (this.GetIntLength() == 1 && this.GetCharIndexAt(0) == '0') // case of -0
+				;
+			else
+				System.out.printf("-");
 		}
 		int idx_max_len = GetIntLength() - 1;
 		for (int i = idx_max_len; i >= 0; i--)
@@ -48,6 +52,11 @@ class MyInteger {
 		return A[_i] - '0';
 	}
 
+	public char GetCharIndexAt(int _i) // A[_i]
+	{
+		return A[_i];
+	}
+	
 	public void SetIntIndexAt(int _i, int _val) // A[_i]
 	{				
 		A[_i] = (char) (_val + '0');
@@ -75,8 +84,12 @@ class MyInteger {
 		int i;
 		int idx_max_len = this.A.length - 1;
 		for (i = idx_max_len; i >= 0; i--)
-			if (GetIntIndexAt(i) != 0) break;
-		SetIntLength(i + 1);
+			if (GetIntIndexAt(i) != 0)
+				break;
+		if ( i == -1 )
+			SetIntLength(1);
+		else
+			SetIntLength(i + 1);
 	}
 
 	public void SetCharSign(char _val)
